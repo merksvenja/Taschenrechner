@@ -1,0 +1,116 @@
+package taschenrechner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Taschenrechner 
+ * @version 1.0 (25.03.2016)
+ * @author Svenja Merk
+ */
+public class Taschenrechner {
+    
+    private double ergebnis; 
+
+    public double getErgebnis() {
+        return ergebnis;
+    }
+    
+    public void rechnen(String rechnung) throws NumberFormatException {
+        
+        int operatorPos;
+        String teil1;
+        String teil2;
+        double zahl1;
+        double zahl2; 
+        
+        ergebnis = 0;
+        
+        if(rechnung.indexOf("+") > 0) {
+            operatorPos = rechnung.indexOf("+");
+            teil1       = rechnung.substring(0, operatorPos) .trim();
+            teil2       = rechnung.substring(operatorPos + 1).trim();
+            zahl1       = Double.parseDouble(teil1);       
+            zahl2       = Double.parseDouble(teil2);
+            ergebnis    = addieren(zahl1, zahl2);
+        } else if(rechnung.indexOf("*") > 0) {
+            operatorPos = rechnung.indexOf("*");
+            teil1       = rechnung.substring(0, operatorPos) .trim();
+            teil2       = rechnung.substring(operatorPos + 1).trim();
+            zahl1       = Double.parseDouble(teil1);
+            zahl2       = Double.parseDouble(teil2);
+            ergebnis    = multiplizieren(zahl1, zahl2);
+        } else if(rechnung.indexOf("/") > 0) {
+            operatorPos = rechnung.indexOf("/");
+            teil1       = rechnung.substring(0, operatorPos) .trim();
+            teil2       = rechnung.substring(operatorPos + 1).trim();
+            zahl1       = Double.parseDouble(teil1);
+            zahl2       = Double.parseDouble(teil2);
+            ergebnis    = dividieren(zahl1, zahl2);
+        } else if(rechnung.indexOf("-") > 0) {
+            operatorPos = rechnung.indexOf("-");
+            teil1       = rechnung.substring(0, operatorPos) .trim();
+            teil2       = rechnung.substring(operatorPos + 1).trim();
+            zahl1       = Double.parseDouble(teil1);
+            zahl2       = Double.parseDouble(teil2);
+            ergebnis    = subtrahieren(zahl1, zahl2);
+        } else {
+            System.out.println("Fehler in der Rechnung, kein passender Operator gefunden (nur + - * /)");
+            return;
+        }      
+    }
+    
+    public String[] historisieren(String rechnung, double ergebnis) throws IOException {
+        PrintWriter pWriter = null;
+        BufferedReader br   = null;
+        String historyFile  = "C:\\Users\\Svenja\\Documents\\NetBeansProjects\\Taschenrechner\\src\\taschenrechner\\history.txt";
+        List list = new ArrayList();
+        String[] strList = null;
+        try {
+            //Ergebnis auf File schreiben
+            pWriter = new PrintWriter(new FileWriter(historyFile, true), true);
+            pWriter.println(rechnung + " = " + Double.toString(ergebnis));
+            
+            //Alle Ergebnisse von File lesen
+            br = new BufferedReader(new FileReader(historyFile));
+            String zeile = "";
+            while((zeile = br.readLine()) != null) {
+                list.add(zeile);
+                System.out.println("von File: " + zeile);
+            }
+            br.close();
+            strList = new String[list.size()];
+            list.toArray(strList);
+            
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            if (pWriter != null) {
+                pWriter.flush();
+                pWriter.close();
+            }
+        }
+        
+        return strList;
+    }
+    
+    private double addieren(double zahl1, double zahl2) {
+        return(zahl1 + zahl2);    
+    }
+    
+    private double subtrahieren(double zahl1, double zahl2) {
+        return(zahl1 - zahl2);
+    }
+    
+    private double multiplizieren(double zahl1, double zahl2) {
+        return(zahl1 * zahl2);
+    }
+    
+    private double dividieren(double zahl1, double zahl2) {
+        return(zahl1 / zahl2);
+    }
+}
