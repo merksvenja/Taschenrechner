@@ -41,7 +41,7 @@ public class TaschenrechnerFrame extends javax.swing.JFrame {
 
         rechnung.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         rechnung.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        rechnung.setText("1+2-3*4/5");
+        rechnung.setText("0");
         rechnung.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rechnungActionPerformed(evt);
